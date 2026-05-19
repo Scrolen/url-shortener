@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+datasource db {
+  provider = "postgresql"
+}
+
+model Link {
+  id Int @id @default(autoincrement())
+
+  longUrl   String @map("long_url")
+  shortCode String? @unique @map("short_code") @db.VarChar(16)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  expiresAt DateTime @map("expires_at")
+
+  clickCount BigInt @default(0) @map("click_count")
+
+  @@index([expiresAt])
+  @@map("links")
+}
